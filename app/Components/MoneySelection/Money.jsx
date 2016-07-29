@@ -31,15 +31,16 @@ export default class Money extends React.Component {
 
   handleClick(event) {
     if (event.target.nodeName === 'SPAN') {
-      console.log(event.target.innerHTML);
+      browserHistory.push('/takeCard');
     }
   }
 
   handleKey(event) {
-    if (event.nativeEvent.keyCode === 13 && event.target.value == 1234){
-      // go forward
-    } else if (event.nativeEvent.keyCode >= 48 && event.nativeEvent.keyCode <= 57) {
-    } else {
+    if (event.nativeEvent.keyCode === 13){
+      if (event.target.value % 10 === 0) {
+        browserHistory.push('/takeCard');
+      }
+    } else if (event.nativeEvent.keyCode < 48 || event.nativeEvent.keyCode > 57) {
       event.preventDefault();
     }
   }

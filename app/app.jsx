@@ -5,6 +5,7 @@ import { Router, Route, browserHistory} from 'react-router';
 import InsertCard from './Components/InsertCard/InsertCard.jsx';
 import PinCode from './Components/PinCode/PinCode.jsx';
 import Money from './Components/MoneySelection/Money.jsx';
+import TakeCard from './Components/TakeCard/TakeCard.jsx';
 
 import styles from './main.less';
 
@@ -15,7 +16,7 @@ class App extends React.Component {
         <Route path="/" component={InsertCard} />
         <Route path="/pinCode" component={PinCode} />
         <Route path='/moneySelection' component={Money} />
-
+        <Route path='/takeCard' component={TakeCard} />
       </Router>
 		);
 	}
