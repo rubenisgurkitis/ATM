@@ -4,7 +4,7 @@ import { Router, Route, browserHistory} from 'react-router';
 
 import InsertCard from './Components/InsertCard/InsertCard.jsx';
 import PinCode from './Components/PinCode/PinCode.jsx';
-import Money from './Components/MoneySelection/Money.jsx';
+import Money from './Components/MoneySelector/MoneySelector.jsx';
 import TakeCard from './Components/TakeCard/TakeCard.jsx';
 
 import styles from './main.less';

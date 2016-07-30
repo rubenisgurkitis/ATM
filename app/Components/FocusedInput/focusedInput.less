@@ -1,0 +1,30 @@
+@import '../../main.less';
+
+:local(.container) {
+  input {
+    font-size: 14px;
+    margin: 5px;
+    border: 1px solid @n26color;
+    height: 30px;
+    text-align: center;
+    text-transform: uppercase;
+    &:focus {
+      outline: none;
+    }
+  }
+
+  :local(.label) {
+    display: none;
+  }
+
+  &.error {
+    input {
+      border: 1px solid tomato;
+    }
+    :local(.label) {
+      margin-top: 5px;
+      display: block;
+      color: tomato;
+    }
+  }
+}

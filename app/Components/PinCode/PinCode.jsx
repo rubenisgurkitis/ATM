@@ -1,8 +1,9 @@
 import React from 'react';
 import Singleton from '../Utils/Singleton.js'
 import Header from '../Header/Header.jsx';
-import FocusedInput from '../Utils/FocusedInput.jsx';
+import FocusedInput from '../FocusedInput/FocusedInput.jsx';
 import { browserHistory } from 'react-router';
+import styles from './pinCode.less';
 
 export default class PinCode extends React.Component {
 
@@ -13,7 +14,7 @@ export default class PinCode extends React.Component {
     this.handleKey = this.handleKey.bind(this);
     this.singleton = new Singleton();
     this.state = {
-      pinCode: null,
+      pinCode: false,
       loading: true
     };
   }
@@ -30,17 +31,23 @@ export default class PinCode extends React.Component {
     }, 1000);
   }
 
-  onPinCorrect() {
-    this.singleton.setPinCorrect(true);
-    browserHistory.push('/moneySelection');
+  isPinCorrect() {
+    let inputElement = document.getElementById('pinInput');
+    debugger
+    if (inputElement.value.length === 4 && inputElement.value == 1234) {
+      this.singleton.setPinCorrect(true);
+      browserHistory.push('/moneySelection');
+    } else {
+      document.getElementById('pinInputContainer').classList.add('error');
+    }
   }
 
   handleKey(event) {
-    if (event.nativeEvent.keyCode === 13 && event.target.value == 1234){
-      this.onPinCorrect();
+    if (event.nativeEvent.keyCode === 13){
+      this.isPinCorrect();
     } else if (event.nativeEvent.keyCode >= 48 && event.nativeEvent.keyCode <= 57 && event.target.value.length < 4) {
       this.setState({
-        pinCode: this.state.pinCode ? this.state.pinCode + event.nativeEvent.key : event.nativeEvent.key
+        pinCode: true
       });
     } else {
       event.preventDefault();
@@ -52,9 +59,7 @@ export default class PinCode extends React.Component {
   }
 
   handleAccept(event) {
-    if (document.getElementById('pinInput').value == 1234){
-      this.onPinCorrect();
-    }
+    this.isPinCorrect();
   }
 
   render() {
@@ -64,20 +69,23 @@ export default class PinCode extends React.Component {
       return (
         <div>
           <Header />
-          <div>
+          <div className={styles.container}>
             <h2>Please, insert your pin code</h2>
             <FocusedInput id="pinInput"
               type="password"
               name="pinCode"
               placeholder="Pin"
               autoComplete="off"
-              handleKey={this.handleKey} />
+              handleKey={this.handleKey}
+              errorMessage="Wrong PIN code" />
             <div>
               <button
+                className={styles.clearButton}
                 onClick={this.handleClear}>
                 Clear
               </button>
               <button
+                className={styles.acceptButton}
                 onClick={this.handleAccept}
                 disabled={!this.state.pinCode}>
                 Accept

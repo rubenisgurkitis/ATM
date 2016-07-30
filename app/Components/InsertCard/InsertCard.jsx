@@ -2,6 +2,7 @@ import React from 'react';
 import Header from '../Header/Header.jsx';
 import Singleton from '../Utils/Singleton.js'
 import { browserHistory } from 'react-router';
+import style from './insertCard.less';
 
 export default class InsertCard extends React.Component {
   constructor(props) {
@@ -19,9 +20,11 @@ export default class InsertCard extends React.Component {
     return (
       <div>
         <Header />
-        <div>
+        <div className={style.container}>
           <h2>Please, insert your card</h2>
-          <button onClick={this.onCard}>Insert card</button>
+          <div>
+            <button className={style.button} onClick={this.onCard}>Insert card</button>
+          </div>
         </div>
       </div>
     );

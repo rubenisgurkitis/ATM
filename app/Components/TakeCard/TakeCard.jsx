@@ -1,6 +1,8 @@
 import React from 'react';
 import Singleton from '../Utils/Singleton.js'
 import { browserHistory } from 'react-router';
+import Header from '../Header/Header.jsx';
+import styles from './takeCard.less'
 
 export default class PinCode extends React.Component {
 
@@ -24,6 +26,10 @@ export default class PinCode extends React.Component {
     }, 1000);
   }
 
+  onCard() {
+    browserHistory.push('/');
+  }
+
   render() {
     if (this.state.loading) {
       return (
@@ -31,7 +37,15 @@ export default class PinCode extends React.Component {
       );
     } else {
       return (
-        <div>Take Card</div>
+        <div>
+          <Header />
+          <div className={styles.container}>
+            <h2>Please, take your card and money</h2>
+            <div>
+              <button className={styles.button} onClick={this.onCard}>Take card</button>
+            </div>
+          </div>
+        </div>
       )
     }
   }

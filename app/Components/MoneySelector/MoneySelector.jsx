@@ -1,8 +1,9 @@
 import React from 'react';
 import Singleton from '../Utils/Singleton.js'
 import Header from '../Header/Header.jsx';
-import FocusedInput from '../Utils/FocusedInput.jsx'
+import FocusedInput from '../FocusedInput/FocusedInput.jsx'
 import { browserHistory } from 'react-router';
+import styles from './moneySelector.less';
 
 export default class Money extends React.Component {
 
@@ -50,24 +51,27 @@ export default class Money extends React.Component {
       return (<h1>Loading</h1>);
     } else {
       return (
-        <div onClick={this.handleClick}>
-          <div className="left">
-            <span>10</span>
-            <span>20</span>
-            <span>50</span>
-          </div>
-          <div className="center">
-            <FocusedInput id="QuantityInput"
-              type="number"
-              name="Quantity"
-              placeholder=""
-              autoComplete="off"
-              handleKey={this.handleKey}/>
-          </div>
-          <div className="right">
-            <span>100</span>
-            <span>200</span>
-            <span>500</span>
+        <div>
+          <Header />
+          <div onClick={this.handleClick}>
+            <div className="left">
+              <span>10</span>
+              <span>20</span>
+              <span>50</span>
+            </div>
+            <div className="center">
+              <FocusedInput id="quantityInput"
+                type="number"
+                name="Quantity"
+                placeholder=""
+                autoComplete="off"
+                handleKey={this.handleKey}/>
+            </div>
+            <div className="right">
+              <span>100</span>
+              <span>200</span>
+              <span>500</span>
+            </div>
           </div>
         </div>
       );

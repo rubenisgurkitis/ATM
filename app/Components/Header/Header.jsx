@@ -1,4 +1,5 @@
 import React from 'react';
+import style from './header.less';
 
 export default class Header extends React.Component {
   constructor(props) {
@@ -7,9 +8,11 @@ export default class Header extends React.Component {
 
   render() {
     return (
-      <header>
-        <img src="app/assets/N26Logo.svg"></img>
-        <h4>Banking by design</h4>
+      <header className={style.header}>
+        <img className={style.img} src="app/assets/number26_2x.png"></img>
+        <div className={style.subtitleContainer}>
+          <h4>Banking by design</h4>
+        </div>
       </header>
     );
   }
