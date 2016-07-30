@@ -1,17 +1,16 @@
 import React from 'react';
-import Singleton from '../Utils/Singleton.js'
+import Singleton from '../Utils/Singleton.js';
 import { browserHistory } from 'react-router';
 import Header from '../Header/Header.jsx';
-import styles from './takeCard.less'
+import styles from './takeCard.less';
+import setLoading from '../Utils/SetLoading.js';
 
 export default class PinCode extends React.Component {
 
   constructor(props) {
     super(props);
     this.singleton = new Singleton();
-    this.state = {
-      loading: true
-    };
+    this.onCard = this.onCard.bind(this);
   }
 
   componentWillMount() {
@@ -21,32 +20,26 @@ export default class PinCode extends React.Component {
   }
 
   componentDidMount() {
-    setTimeout(() => {
-      this.setState({loading: false});
-    }, 1000);
+    setLoading(false);
   }
 
   onCard() {
+    this.singleton.setCardInserted(false);
+    this.singleton.setPinCorrect(false);
     browserHistory.push('/');
   }
 
   render() {
-    if (this.state.loading) {
-      return (
-        <h1>Loading</h1>
-      );
-    } else {
-      return (
-        <div>
-          <Header />
-          <div className={styles.container}>
-            <h2>Please, take your card and money</h2>
-            <div>
-              <button className={styles.button} onClick={this.onCard}>Take card</button>
-            </div>
+    return (
+      <div>
+        <Header />
+        <div className={styles.container}>
+          <h2>Please, take your card and money</h2>
+          <div>
+            <button className={styles.button} onClick={this.onCard}>Take card</button>
           </div>
         </div>
-      )
-    }
+      </div>
+    );
   }
 }

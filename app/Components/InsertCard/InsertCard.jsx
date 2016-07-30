@@ -1,8 +1,10 @@
 import React from 'react';
 import Header from '../Header/Header.jsx';
-import Singleton from '../Utils/Singleton.js'
+import Singleton from '../Utils/Singleton.js';
+import Loading from '../Loading/Loading.jsx';
 import { browserHistory } from 'react-router';
 import style from './insertCard.less';
+import setLoading from '../Utils/SetLoading.js';
 
 export default class InsertCard extends React.Component {
   constructor(props) {
@@ -11,15 +13,23 @@ export default class InsertCard extends React.Component {
     this.onCard = this.onCard.bind(this);
   }
 
+  componentDidMount() {
+    setLoading(false);
+  }
+
   onCard() {
     this.singleton.setCardInserted(true);
-    browserHistory.push('/pinCode');
+    setLoading(true);
+    setTimeout(() => {
+      browserHistory.push('/pinCode');
+    }, 2000);
   }
 
   render() {
     return (
       <div>
         <Header />
+        <Loading />
         <div className={style.container}>
           <h2>Please, insert your card</h2>
           <div>

@@ -2,6 +2,8 @@ import React from 'react';
 import Singleton from '../Utils/Singleton.js'
 import Header from '../Header/Header.jsx';
 import FocusedInput from '../FocusedInput/FocusedInput.jsx'
+import Loading from '../Loading/Loading.jsx';
+import setLoading from '../Utils/SetLoading.js';
 import { browserHistory } from 'react-router';
 import styles from './moneySelector.less';
 
@@ -27,16 +29,16 @@ export default class Money extends React.Component {
   }
 
   componentDidMount() {
-    setTimeout(() => {
-      this.setState({
-        loading: false
-      });
-    }, 1000);
+    setLoading(false);
   }
 
   handleClick(event) {
     if (event.target.className === styles.quantity) {
-      browserHistory.push('/takeCard');
+      setLoading(true);
+      setTimeout(() => {
+        //setLoading(false);
+        browserHistory.push('/takeCard');
+      }, 2000);
     }
   }
 
@@ -53,7 +55,12 @@ export default class Money extends React.Component {
   }
 
   handleBack(event) {
-    browserHistory.goBack();
+    setLoading(true);
+    setTimeout(() => {
+      this.singleton.pinCorrect(false);
+      //setLoading(false);
+      browserHistory.goBack();
+    }, 1000);
   }
 
   handleClear() {
@@ -69,64 +76,66 @@ export default class Money extends React.Component {
   }
 
   checkAmount(amount) {
-    if (amount && amount % 10 === 0) {
-      browserHistory.push('/takeCard');
-    } else {
-      document.getElementById('quantityInputContainer').classList.add('error');
-    }
+    setLoading(true);
+    setTimeout(() => {
+      if (amount && amount % 10 === 0 && amount < 50000) {
+        browserHistory.push('/takeCard');
+      } else {
+        document.getElementById('quantityInputContainer').classList.add('error');
+        setLoading(false);
+      }
+      //setLoading(false);
+    }, 2000);
   }
 
   render() {
-    if (this.state.loading) {
-      return (<h1>Loading</h1>);
-    } else {
-      return (
-        <div>
-          <Header />
-          <div className={styles.inputContainer}>
-            <h2>Please, insert an ammount (min. quantity is 10€)</h2>
-            <FocusedInput id="quantityInput"
-              type="number"
-              name="Quantity"
-              placeholder="€"
-              autoComplete="off"
-              handleKey={this.handleKey}
-              errorMessage="Wrong amount"/>
-              <div>
-                <button
-                  className={styles.backButton}
-                  onClick={this.handleBack}>
-                  Back
-                </button>
-                <button
-                  className={styles.acceptButton}
-                  onClick={this.handleAccept}
-                  disabled={!this.state.isAmount}>
-                  Accept
-                </button>
-                <button
-                  className={styles.clearButton}
-                  onClick={this.handleClear}
-                  disabled={!this.state.isAmount}>
-                  Clear
-                </button>
-              </div>
+    return (
+      <div>
+        <Header />
+        <Loading />
+        <div className={styles.inputContainer}>
+          <h2>Please, insert an amount (min. quantity is 10€)</h2>
+          <FocusedInput id="quantityInput"
+            type="number"
+            name="Quantity"
+            placeholder="€"
+            autoComplete="off"
+            handleKey={this.handleKey}
+            errorMessage="Wrong amount"/>
+            <div>
+              <button
+                className={styles.backButton}
+                onClick={this.handleBack}>
+                Back
+              </button>
+              <button
+                className={styles.acceptButton}
+                onClick={this.handleAccept}
+                disabled={!this.state.isAmount}>
+                Accept
+              </button>
+              <button
+                className={styles.clearButton}
+                onClick={this.handleClear}
+                disabled={!this.state.isAmount}>
+                Clear
+              </button>
+            </div>
+        </div>
+        <div className={styles.choices}
+          onClick={this.handleClick}>
+          <div className={styles.left}>
+            <div className={styles.quantity}>10</div>
+            <div className={styles.quantity}>20</div>
+            <div className={styles.quantity}>50</div>
           </div>
-          <div className={styles.choices}
-            onClick={this.handleClick}>
-            <div className={styles.left}>
-              <div className={styles.quantity}>10</div>
-              <div className={styles.quantity}>20</div>
-              <div className={styles.quantity}>50</div>
-            </div>
-            <div className={styles.right}>
-              <div className={styles.quantity}>100</div>
-              <div className={styles.quantity}>200</div>
-              <div className={styles.quantity}>500</div>
-            </div>
+          <div className={styles.right}>
+            <div className={styles.quantity}>100</div>
+            <div className={styles.quantity}>200</div>
+            <div className={styles.quantity}>500</div>
           </div>
         </div>
-      );
-    }
+      </div>
+    );
   }
 }
