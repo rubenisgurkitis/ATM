@@ -22,10 +22,16 @@ export default class PinCode extends React.Component {
   }
 
   componentDidMount() {
-    setLoading(false);
+    // Animations give better fealing when removing loading class in the
+    // new component
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
   }
 
   componentWillMount() {
+    // If the card is not inserted, get back to the first screen
     if (!this.singleton.cardInserted) {
       browserHistory.push('/');
     }
@@ -33,22 +39,26 @@ export default class PinCode extends React.Component {
 
   isPinCorrect() {
     let inputElement = document.getElementById('pinInput');
-    setLoading(true);
-    setTimeout(() => {
+      // It doesn't use === to save a parseInt, since is a demo is save enough
       if (inputElement.value && inputElement.value == 1234) {
         this.singleton.setPinCorrect(true);
         browserHistory.push('/moneySelection');
       } else {
-        document.getElementById('pinInputContainer').classList.add('error');
-        setLoading(false);
+        // If there's an error, finish the loading screen and show the error label
+        setLoading(true);
+        setTimeout(() => {
+          document.getElementById('pinInputContainer').classList.add('error');
+          setLoading(false);
+        }, 2000);
       }
-    }, 2000);
   }
 
   handleKey(event) {
+    // Allows the user to only use number keys and enter
     if (event.nativeEvent.keyCode === 13){
       this.isPinCorrect();
     } else if (event.nativeEvent.keyCode >= 48 && event.nativeEvent.keyCode <= 57 && event.target.value.length < 4) {
+      // Used only to know if buttons should be enabled
       this.setState({
         pinCode: true
       });
@@ -60,9 +70,10 @@ export default class PinCode extends React.Component {
   handleClear(event) {
     document.getElementById('pinInput').value = '';
     document.getElementById('pinInputContainer').classList.remove('error');
+    // Disables the buttons
     this.setState({
       pinCode: false
-    }, 1000);
+    });
   }
 
   handleAccept(event) {
@@ -70,11 +81,8 @@ export default class PinCode extends React.Component {
   }
 
   handleBack(event) {
-    setLoading(true);
-    setTimeout(() => {
-      //setLoading(false);
-      browserHistory.goBack();
-    }, 1000)
+    // Previous screen would be to take the card
+    browserHistory.push('/takeCard');
   }
 
   render() {
@@ -95,7 +103,7 @@ export default class PinCode extends React.Component {
             <button
               className={styles.backButton}
               onClick={this.handleBack}>
-              Back
+              Cancel
             </button>
             <button
               className={styles.acceptButton}

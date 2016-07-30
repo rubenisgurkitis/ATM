@@ -14,15 +14,20 @@ export default class InsertCard extends React.Component {
   }
 
   componentDidMount() {
-    setLoading(false);
+    // Animations give better fealing when removing loading class in the
+    // new component
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
   }
 
   onCard() {
     this.singleton.setCardInserted(true);
-    setLoading(true);
-    setTimeout(() => {
+    //setLoading(true);
+    //setTimeout(() => {
       browserHistory.push('/pinCode');
-    }, 2000);
+    //}, 2000);
   }
 
   render() {

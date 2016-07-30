@@ -17,32 +17,34 @@ export default class Money extends React.Component {
     this.handleClear = this.handleClear.bind(this);
     this.handleAccept = this.handleAccept.bind(this);
     this.state = {
-      loading: true,
       isAmount: false
     };
   }
 
   componentWillMount() {
+    // If the user access without card and pin, go to first screen
     if (!this.singleton.cardInserted || !this.singleton.pinCorrect) {
       browserHistory.push('/');
     }
   }
 
   componentDidMount() {
-    setLoading(false);
+    // Animations give better fealing when removing loading class in the
+    // new component
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
   }
 
   handleClick(event) {
     if (event.target.className === styles.quantity) {
-      setLoading(true);
-      setTimeout(() => {
-        //setLoading(false);
-        browserHistory.push('/takeCard');
-      }, 2000);
+      browserHistory.push('/takeCard');
     }
   }
 
   handleKey(event) {
+    // Allow the user to only use numeric keys and enter
     if (event.nativeEvent.keyCode === 13){
       this.checkAmount(event.target.value);
     } else if (event.nativeEvent.keyCode < 48 || event.nativeEvent.keyCode > 57) {
@@ -55,12 +57,8 @@ export default class Money extends React.Component {
   }
 
   handleBack(event) {
-    setLoading(true);
-    setTimeout(() => {
-      this.singleton.pinCorrect(false);
-      //setLoading(false);
-      browserHistory.goBack();
-    }, 1000);
+    // Makes no sense to go back to the enter pin screen, go to takeCard
+    browserHistory.push('/takeCard');
   }
 
   handleClear() {
@@ -76,16 +74,16 @@ export default class Money extends React.Component {
   }
 
   checkAmount(amount) {
-    setLoading(true);
-    setTimeout(() => {
       if (amount && amount % 10 === 0 && amount < 50000) {
         browserHistory.push('/takeCard');
       } else {
-        document.getElementById('quantityInputContainer').classList.add('error');
-        setLoading(false);
+        setLoading(true);
+        setTimeout(() => {
+          // If there's an error, finish the loading screen and show the error label
+          document.getElementById('quantityInputContainer').classList.add('error');
+          setLoading(false);
+        }, 2000);
       }
-      //setLoading(false);
-    }, 2000);
   }
 
   render() {
@@ -106,7 +104,7 @@ export default class Money extends React.Component {
               <button
                 className={styles.backButton}
                 onClick={this.handleBack}>
-                Back
+                Cancel
               </button>
               <button
                 className={styles.acceptButton}

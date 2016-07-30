@@ -2,6 +2,9 @@
 
 :local(.loadingContainer) {
   display: none;
+  & + & {
+    visibility: visible;
+  }
 }
 
 .loading {
@@ -14,6 +17,9 @@
     background-color: @n26color;
     z-index: 2;
     animation: blinder 2s ease;
+    & + & {
+      visibility: hidden;
+    }
   }
   @keyframes blinder {
     0% {

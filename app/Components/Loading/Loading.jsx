@@ -1,5 +1,4 @@
 import React from 'react';
-import Header from '../Header/Header.jsx'
 import styles from './loading.less';
 
 export default class Loading extends React.Component {
