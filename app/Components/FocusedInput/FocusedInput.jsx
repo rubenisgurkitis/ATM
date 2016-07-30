@@ -46,7 +46,7 @@ FocusedInput.defaultProps = {
   name: 'input',
   placeholder: '',
   autoComplete: 'off',
-  onKeyPress: () =>{},
+  onKeyPress: () => {},
   errorMessage: 'Wrong value!'
 };
 

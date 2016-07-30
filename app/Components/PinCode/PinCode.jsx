@@ -9,6 +9,7 @@ export default class PinCode extends React.Component {
 
   constructor(props) {
     super(props);
+    this.handleBack = this.handleBack.bind(this);
     this.handleClear = this.handleClear.bind(this);
     this.handleAccept = this.handleAccept.bind(this);
     this.handleKey = this.handleKey.bind(this);
@@ -33,7 +34,6 @@ export default class PinCode extends React.Component {
 
   isPinCorrect() {
     let inputElement = document.getElementById('pinInput');
-    debugger
     if (inputElement.value.length === 4 && inputElement.value == 1234) {
       this.singleton.setPinCorrect(true);
       browserHistory.push('/moneySelection');
@@ -56,10 +56,18 @@ export default class PinCode extends React.Component {
 
   handleClear(event) {
     document.getElementById('pinInput').value = '';
+    document.getElementById('pinInputContainer').classList.remove('error');
+    this.setState({
+      pinCode: false
+    });
   }
 
   handleAccept(event) {
     this.isPinCorrect();
+  }
+
+  handleBack(event) {
+    browserHistory.goBack();
   }
 
   render() {
@@ -80,15 +88,20 @@ export default class PinCode extends React.Component {
               errorMessage="Wrong PIN code" />
             <div>
               <button
-                className={styles.clearButton}
-                onClick={this.handleClear}>
-                Clear
+                className={styles.backButton}
+                onClick={this.handleBack}>
+                Back
               </button>
               <button
                 className={styles.acceptButton}
                 onClick={this.handleAccept}
                 disabled={!this.state.pinCode}>
                 Accept
+              </button>
+              <button
+                className={styles.clearButton}
+                onClick={this.handleClear}>
+                Clear
               </button>
             </div>
           </div>
